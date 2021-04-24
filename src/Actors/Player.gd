@@ -8,9 +8,9 @@ var state
 enum States {
 	NORMAL,
 	DRILL_FLOOR,
-	DRILL_CEILLING,
+	#DRILL_CEILLING,
 	DRILL_WALL_UP,
-	DRILL_WALL_DOWN,
+	#DRILL_WALL_DOWN,
 	DRILL_JUMP,
 }
 
@@ -27,54 +27,33 @@ func _physics_process(delta: float) -> void:
 	if direction.y == -1.0 and is_drilling_floor():
 		drill_jump = true
 	velocity = compute_move_velocity(velocity, direction)
-	#velocity = move_and_slide(velocity, FLOOR_NORMAL)
-	velocity = move_and_slide_with_snap(velocity, get_snap(), get_normal())
-
-
-func get_normal():
-	match state:
-		States.DRILL_WALL_UP:
-			return Vector2(-facing.x, 0)
-		States.DRILL_WALL_DOWN:
-			return Vector2(-facing.x, 0)
-		States.DRILL_CEILLING:
-			return CEILLING_NORMAL
-		_:
-			return FLOOR_NORMAL
-
-
-func get_snap():
-	match state:
-		States.NORMAL:
-			return Vector2.ZERO
-		_:
-			return -get_normal()
+	velocity = move_and_slide(velocity, FLOOR_NORMAL)
 
 
 func update_state(direction: Vector2) -> void:
-	if is_falling() and not state in [States.NORMAL] and $DrillFallDelay.time_left == 0:
-		$DrillFallDelay.start()
-	elif not is_falling() and  $DrillFallDelay.time_left > 0:
-		$DrillFallDelay.stop()
+	#if is_falling() and not state in [States.NORMAL] and $DrillFallDelay.time_left == 0:
+	#	$DrillFallDelay.start()
+	#elif not is_falling() and  $DrillFallDelay.time_left > 0:
+	#	$DrillFallDelay.stop()
 	var pressed_drill = Input.is_action_pressed("drill")
-	if not pressed_drill:
+	if not pressed_drill or is_falling():
 		state = States.NORMAL
 	elif is_on_floor() and pressed_drill:
 		state = States.DRILL_FLOOR
 	if is_on_wall() and (state in [States.DRILL_FLOOR, States.DRILL_WALL_UP]):
 		state = States.DRILL_WALL_UP
-	elif is_on_wall() and state in [States.DRILL_CEILLING, States.DRILL_WALL_DOWN]:
-		state = States.DRILL_WALL_DOWN
-	elif is_on_ceiling() and state in [States.DRILL_WALL_UP]:
-		facing.x = -facing.x
-		state = States.DRILL_CEILLING
-	elif is_on_floor() and state in [States.DRILL_WALL_DOWN]:
-		facing.x = -facing.x
-		state = States.DRILL_FLOOR
+	#elif is_on_wall() and state in [States.DRILL_CEILLING, States.DRILL_WALL_DOWN]:
+	#	state = States.DRILL_WALL_DOWN
+	#elif is_on_ceiling() and state in [States.DRILL_WALL_UP]:
+	#	facing.x = -facing.x
+	#	state = States.DRILL_CEILLING
+	#elif is_on_floor() and state in [States.DRILL_WALL_DOWN]:
+	#	facing.x = -facing.x
+	#	state = States.DRILL_FLOOR
 
 
-func _on_DrillFallDelay_timeout():
-	state = States.NORMAL
+#func _on_DrillFallDelay_timeout():
+#	state = States.NORMAL
 
 
 func is_falling() -> bool:
@@ -115,12 +94,10 @@ func get_h_move() -> float:
 func get_v_move() -> float:
 	if state in [States.DRILL_WALL_UP]:
 		return -1.0
-	elif state in [States.DRILL_WALL_DOWN]:
-		return 1.0
+	#elif state in [States.DRILL_WALL_DOWN]:
+	#	return 1.0
 	elif state in [States.NORMAL, States.DRILL_FLOOR] and is_on_floor() and jumped():
 		return -1.0
-	#elif is_on_wall() and is_on_floor() and is_drilling():
-	#	return facing.y
 	else:
 		return 1.0
 
@@ -139,8 +116,3 @@ func is_drilling_jump() -> bool:
 
 func jumped() -> bool:
 	return Input.is_action_just_pressed("jump")
-
-
-#func is_jump_interrupted() -> bool:
-#	return Input.is_action_just_released("jump") and velocity.y < 0.0
-	
