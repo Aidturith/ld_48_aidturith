@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/bgm_low_engine.wav-3fce59b834a9c48587bc847ecdde8131.sample"
+
+[deps]
+
+source_file="res://sounds/bgm_low_engine.wav"
+dest_files=[ "res://.import/bgm_low_engine.wav-3fce59b834a9c48587bc847ecdde8131.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
