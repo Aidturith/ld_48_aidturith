@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://src/Levels/CaveTileSet.tres" type="TileSet" id=1]
 [ext_resource path="res://src/Actors/Player.tscn" type="PackedScene" id=2]
@@ -10,11 +10,12 @@
 [ext_resource path="res://sounds/sfx_tile_destruct_3.wav" type="AudioStream" id=8]
 [ext_resource path="res://ressources/characters/trex_bones_cleaned.png" type="Texture" id=9]
 [ext_resource path="res://src/Levels/TrexBones.gd" type="Script" id=10]
-
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 88, 8 )
+[ext_resource path="res://ressources/music/deep_exploration.wav" type="AudioStream" id=11]
 
 [sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 88, 8 )
+
+[sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 512, 300 )
 
 [node name="LevelTemplate" type="Node2D"]
@@ -82,7 +83,7 @@ texture = ExtResource( 9 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemies/TrexBones"]
 position = Vector2( 312, 1144 )
-shape = SubResource( 2 )
+shape = SubResource( 1 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 512, 300 )
@@ -97,7 +98,7 @@ visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Screens/Screen1"]
 position = Vector2( 512, 300 )
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 
 [node name="Screen2" type="Area2D" parent="Screens"]
 visible = false
@@ -105,7 +106,11 @@ position = Vector2( 0, 600 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Screens/Screen2"]
 position = Vector2( 512, 300 )
-shape = SubResource( 1 )
+shape = SubResource( 2 )
+
+[node name="Bgm" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 11 )
+volume_db = -25.0
 
 [connection signal="body_entered" from="Enemies/TrexBones" to="Enemies/TrexBones" method="_on_TrexBones_body_entered"]
 [connection signal="body_entered" from="Screens/Screen2" to="Camera2D" method="_on_Screen2_body_entered"]

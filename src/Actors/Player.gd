@@ -5,9 +5,6 @@ export var drill_speed := Vector2(500.0, 250.0)
 var state = States.NORMAL
 var bounced = false
 
-var _texture_stand = preload("res://src/Actors/player_standing.png")
-var _texture_crouch = preload("res://src/Actors/player_crouching.png")
-
 enum States {
 	NORMAL,
 	#JUMP,
@@ -28,10 +25,10 @@ func _process(delta):
 func update_sprite() -> void:
 	match state:
 		States.NORMAL:
-			$Sprite.texture = _texture_stand
+			$AnimatedSprite.play('stand')
 		_:
-			$Sprite.texture = _texture_crouch
-	$Sprite.flip_h = true if facing.x == 1 else false
+			$AnimatedSprite.play('drill')
+	$AnimatedSprite.flip_h = true if facing.x == 1 else false
 
 
 func update_sfx(delta: float) -> void:
