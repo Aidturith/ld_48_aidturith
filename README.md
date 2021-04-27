@@ -1,2 +1,2 @@
 # ld_48_aidturith
-Ludum date
+Ludum dare
