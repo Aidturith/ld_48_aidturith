@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/trex_bones.png-3776a6cb4317bddc5d9ad614f211b9fa.stex"
+path="res://.import/trex.png-7a79ea55d0cf3199e73a69d7e316a0d4.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/Actors/trex_bones.png"
-dest_files=[ "res://.import/trex_bones.png-3776a6cb4317bddc5d9ad614f211b9fa.stex" ]
+source_file="res://assets/characters/trex.png"
+dest_files=[ "res://.import/trex.png-7a79ea55d0cf3199e73a69d7e316a0d4.stex" ]
 
 [params]
 

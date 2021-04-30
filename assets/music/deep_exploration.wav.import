@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/deep_exploration.wav-31c600412449faf44c7cae04d91022e0.sample"
+
+[deps]
+
+source_file="res://assets/music/deep_exploration.wav"
+dest_files=[ "res://.import/deep_exploration.wav-31c600412449faf44c7cae04d91022e0.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

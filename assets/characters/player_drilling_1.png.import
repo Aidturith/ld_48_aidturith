@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/player_standing.png-4e9d826582f0097bd9b037f26c179bae.stex"
+path="res://.import/player_drilling_1.png-6041c6631e6a34d991a03535e47c671c.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/Actors/player_standing.png"
-dest_files=[ "res://.import/player_standing.png-4e9d826582f0097bd9b037f26c179bae.stex" ]
+source_file="res://assets/characters/player_drilling_1.png"
+dest_files=[ "res://.import/player_drilling_1.png-6041c6631e6a34d991a03535e47c671c.stex" ]
 
 [params]
 

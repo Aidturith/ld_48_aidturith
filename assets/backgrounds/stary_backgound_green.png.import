@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/player_drilling_1.png-56f11860c4fb19dd472efaace013b364.stex"
+path="res://.import/stary_backgound_green.png-f9eb6326323c79ab01cd7e45259a7794.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/Actors/player_drilling_1.png"
-dest_files=[ "res://.import/player_drilling_1.png-56f11860c4fb19dd472efaace013b364.stex" ]
+source_file="res://assets/backgrounds/stary_backgound_green.png"
+dest_files=[ "res://.import/stary_backgound_green.png-f9eb6326323c79ab01cd7e45259a7794.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
