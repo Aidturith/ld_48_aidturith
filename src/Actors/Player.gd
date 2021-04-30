@@ -23,25 +23,20 @@ func _process(delta):
 	
 
 func update_sprite() -> void:
-	match state:
-		States.NORMAL:
-			$AnimatedSprite.play('stand')
-		_:
-			$AnimatedSprite.play('drill')
-	$AnimatedSprite.flip_h = true if facing.x == 1 else false
+	if drilling():
+		$AnimatedSprite.play('drill')
+	else:
+		$AnimatedSprite.play('stand')
 
 
 func update_sfx(delta: float) -> void:
-	match [state, $SfxDrillOn.playing]:
-		[States.DRILL_FLOOR, false], \
-		[States.DRILL_WALL_UP, false]:
-			$SfxDrillOn.pitch_scale = 1.0
-			$SfxDrillOn.play()
-		[States.DRILL_FLOOR, true], \
-		[States.DRILL_WALL_UP, true]:
-			tone_up_drill_sfx(delta)
-		[States.NORMAL, true]:
-			tone_down_drill_sfx(delta)
+	if drilling() and not $SfxDrillOn.playing:
+		$SfxDrillOn.pitch_scale = 1.0
+		$SfxDrillOn.play()
+	elif drilling():
+		tone_up_drill_sfx(delta)
+	else:
+		tone_down_drill_sfx(delta)
 
 
 func tone_up_drill_sfx(delta: float) -> void:
@@ -56,81 +51,63 @@ func tone_down_drill_sfx(delta: float) -> void:
 		$SfxDrillOn.stop()
 
 
-func _physics_process(delta: float) -> void:
-	var direction = get_direction()
-	if direction.x != 0:
-		facing.x = direction.x
-	update_state()
-	velocity = compute_move_velocity(velocity, direction)
-	velocity = move_and_slide(velocity, FLOOR_NORMAL)
-
-
-func update_state() -> void:
-	var pressed_drill = Input.is_action_pressed("drill")
-	bounced = false
-	#if state in [States.DRILL_BOUNCE] and is_on_floor():
-	#	state = States.NORMAL
-	#if state in [States.JUMP, States.DRILL_JUMP, States.DRILL_BOUNCE]:
-	#	state = States.NORMAL
-	#if pressed_jump:
-	#	if is_on_floor() and state in [States.NORMAL]:
-	#		state = States.JUMP
-	#	elif is_on_floor() and state in [States.DRILL_FLOOR]:
-	#		state = States.DRILL_JUMP
-	if pressed_drill:
-		if is_on_wall():
-			bounced = true
-		if is_on_floor() and state in [States.NORMAL, States.DRILL_FLOOR]:
-			state = States.DRILL_FLOOR
+func _physics_process(delta):
+	if drill_started():
+		$Timers/DrillStart.start()
+	if drill_starting():
+		var push_back = speed.x * -get_direction() * 4
+		velocity.x = lerp(velocity.x, push_back, 0.1)
+	elif drilling():
+		var top_speed = speed.x * get_direction() * 2
+		velocity.x = lerp(velocity.x, top_speed, 0.1)
+	elif move_right() and move_left():
+		velocity.x = lerp(velocity.x, 0.0, 0.2)
+	elif move_right():
+		$AnimatedSprite.flip_h = true
+		velocity.x = lerp(velocity.x, speed.x, 0.5)
+	elif move_left():
+		$AnimatedSprite.flip_h = false
+		velocity.x = lerp(velocity.x, -speed.x, 0.5)
 	else:
-		state = States.NORMAL
+		velocity.x = lerp(velocity.x, 0.0, 0.2)
+	velocity.y += gravity
+	if jumped() and is_on_floor():
+		velocity.y = speed.y
+	velocity = move_and_slide(velocity, Vector2.UP)
+	for i in get_slide_count():
+		var collision = get_slide_collision(i)
+		if drilling() and is_on_wall() and collision.collider.is_in_group("rock"):
+			Input.action_release("drill")
+			velocity.x = speed.x * -collision.remainder.x * 0.8
+			velocity.y = speed.y * 0.8
+			print(get_slide_count())
+		elif drilling() and is_on_wall() and collision.collider.is_in_group("sand"):
+			print("sticky")
 
-
-func is_falling() -> bool:
-	return not (is_on_floor() or is_on_wall() or is_on_ceiling())
-
-
-func compute_move_velocity(
-		old_velocity: Vector2,
-		direction: Vector2) -> Vector2:
-	var speed = get_speed()
-	var new := old_velocity
-	new.x = speed.x * direction.x
-	new.y += gravity * get_physics_process_delta_time()
-	if direction.y == -1.0:
-		new.y = speed.y * direction.y
-	return new
-
-
-func get_speed() -> Vector2:
-	return drill_speed if not state in [States.NORMAL] else walk_speed
-
-
-func get_direction() -> Vector2:
-	var h_move = get_h_move()
-	var v_move = get_v_move()
-	return Vector2(h_move, v_move)
-	
-	
-func get_h_move() -> float:
-	if state in [States.DRILL_FLOOR]:
-		return facing.x
-	elif bounced:
-		return -facing.x
-	else:
-		var move_right := Input.get_action_strength("move_right")
-		var move_left := Input.get_action_strength("move_left")
-		return move_right - move_left
-
-
-func get_v_move() -> float:
-	if bounced and is_on_floor():
-		return -1.0
-	elif jumped() and is_on_floor():
-		$SfxJump1.play()
-		return -1.0
-	else:
-		return 1.0
 
 func jumped():
 	return Input.is_action_just_pressed("jump")
+
+
+func drilling():
+	return Input.is_action_pressed("drill")
+
+
+func drill_started():
+	return Input.is_action_just_pressed("drill")
+
+
+func drill_starting() -> bool:
+	return $Timers/DrillStart.time_left > 0.0
+
+
+func move_left():
+	return Input.is_action_pressed('move_left')
+	
+	
+func move_right():
+	return Input.is_action_pressed('move_right')
+
+
+func get_direction():
+	return 1 if $AnimatedSprite.flip_h else -1

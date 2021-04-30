@@ -1,6 +1,6 @@
 extends Area2D
 
-var trex_factory = preload("res://src/Actors/Trex.tscn")
+var trex_factory = preload("res://scenes/Actors/Trex.tscn")
 
 func _process(delta):
 	pass

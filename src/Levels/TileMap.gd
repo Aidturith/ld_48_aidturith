@@ -27,6 +27,7 @@ func process_destructions():
 		play_random_sfx()
 		$TileDestruction.start()
 
+
 func play_random_sfx():
 	var i = rng.randi() % 4 + 1
 	get_node("SfxTileDestruct" + str(i)).play()
