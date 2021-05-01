@@ -1,8 +1,12 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://ressources/PixelFrogWalls.tres" type="TileSet" id=1]
-[ext_resource path="res://scenes/actors/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/levels/level.gd" type="Script" id=2]
 [ext_resource path="res://assets/tilesets/pixelfrog-terrain.png" type="Texture" id=3]
+[ext_resource path="res://sounds/sfx_tile_destruct_1.wav" type="AudioStream" id=4]
+[ext_resource path="res://sounds/sfx_tile_destruct_4.wav" type="AudioStream" id=5]
+[ext_resource path="res://sounds/sfx_tile_destruct_2.wav" type="AudioStream" id=6]
+[ext_resource path="res://sounds/sfx_tile_destruct_3.wav" type="AudioStream" id=7]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
@@ -346,6 +350,7 @@ points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
 12/z_index = 0
 
 [node name="TestLevel" type="Node2D"]
+script = ExtResource( 2 )
 
 [node name="Walls" type="TileMap" parent="." groups=[
 "rock",
@@ -365,5 +370,28 @@ cell_size = Vector2( 16, 16 )
 format = 1
 tile_data = PoolIntArray( 983042, 0, 0, 983043, 1, 0, 983044, 1, 0, 983045, 1, 0, 983046, 1, 0, 983047, 1, 0, 983048, 1, 0, 983049, 1, 0, 983050, 1, 0, 983051, 1, 0, 983052, 1, 0, 983053, 1, 0, 983054, 1, 0, 983055, 1, 0, 983056, 1, 0, 983057, 1, 0, 983058, 1, 0, 983059, 1, 0, 983060, 1, 0, 983061, 1, 0, 983062, 1, 0, 983063, 1, 0, 983064, 1, 0, 983065, 1, 0, 983066, 1, 0, 983067, 1, 0, 983068, 1, 0, 983069, 2, 0, 1048578, 6, 0, 1048579, 6, 0, 1048580, 6, 0, 1048581, 6, 0, 1048582, 6, 0, 1048583, 6, 0, 1048584, 6, 0, 1048585, 6, 0, 1048586, 6, 0, 1048587, 6, 0, 1048588, 6, 0, 1048589, 6, 0, 1048590, 6, 0, 1048591, 6, 0, 1048592, 6, 0, 1048593, 6, 0, 1048594, 6, 0, 1048595, 6, 0, 1048596, 6, 0, 1048597, 6, 0, 1048598, 6, 0, 1048599, 6, 0, 1048600, 6, 0, 1048601, 6, 0, 1048602, 6, 0, 1048603, 6, 0, 1048604, 6, 0, 1048605, 6, 0, 1114119, 6, 0, 1114120, 6, 0, 1114121, 6, 0, 1114122, 6, 0, 1114123, 6, 0, 1114124, 6, 0, 1114125, 6, 0, 1114126, 6, 0, 1114127, 6, 0, 1114128, 6, 0, 1114129, 6, 0, 1114130, 6, 0, 1114131, 6, 0, 1114132, 6, 0, 1114133, 6, 0, 1114134, 6, 0, 1114135, 6, 0, 1114136, 6, 0, 1114137, 6, 0, 1114138, 6, 0, 1114139, 6, 0, 1114140, 6, 0 )
 
-[node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 312, 424 )
+[node name="TileDestruction" type="Timer" parent="."]
+wait_time = 0.08
+one_shot = true
+
+[node name="SFX" type="Node2D" parent="."]
+
+[node name="TileDestruct1" type="AudioStreamPlayer2D" parent="SFX"]
+scale = Vector2( 4, 4 )
+stream = ExtResource( 4 )
+volume_db = -4.0
+
+[node name="TileDestruct2" type="AudioStreamPlayer2D" parent="SFX"]
+scale = Vector2( 4, 4 )
+stream = ExtResource( 6 )
+volume_db = -4.0
+
+[node name="TileDestruct3" type="AudioStreamPlayer2D" parent="SFX"]
+scale = Vector2( 4, 4 )
+stream = ExtResource( 7 )
+volume_db = -4.0
+
+[node name="TileDestruct4" type="AudioStreamPlayer2D" parent="SFX"]
+scale = Vector2( 4, 4 )
+stream = ExtResource( 5 )
+volume_db = -4.0

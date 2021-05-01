@@ -21,7 +21,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Ludum Dare 48 Deeper and deeper"
-run/main_scene="res://scenes/levels/DebugLevel.tscn"
+run/main_scene="res://scenes/Game.tscn"
 config/icon="res://icon.png"
 
 [display]
@@ -71,3 +71,7 @@ drill={
 [physics]
 
 common/enable_pause_aware_picking=true
+
+[rendering]
+
+quality/driver/driver_name="GLES2"

@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=2]
 
-[ext_resource path="res://src/Levels/TileMap.gd" type="Script" id=1]
+[ext_resource path="res://src/Levels/level.gd" type="Script" id=1]
 [ext_resource path="res://src/Levels/TrexBones.gd" type="Script" id=2]
 [ext_resource path="res://assets/music/deep_exploration.wav" type="AudioStream" id=3]
 [ext_resource path="res://assets/characters/trex_bones.png" type="Texture" id=4]
