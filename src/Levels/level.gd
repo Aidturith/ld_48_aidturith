@@ -20,6 +20,7 @@ func process_destructions():
 	if tiles_to_destroy.size() > 0 and $TileDestruction.time_left == 0:
 		var to_destroy = tiles_to_destroy.pop_front()
 		$Sand.set_cellv(to_destroy, -1)
+		$Sand.update_bitmask_region()  # TODO could use some optimisation
 		play_random_sfx()
 		$TileDestruction.start()
 
@@ -34,7 +35,12 @@ func global_to_tile(global_pos, tile_map):
 	return tile_map.world_to_map(local_pos)
 
 
-func _on_Player_destroy_tile(global_pos):
-	var tile = global_to_tile(global_pos, $Sand)
-	if $Sand.get_cellv(tile) != -1 and not tile in tiles_to_destroy:
-		tiles_to_destroy.append(tile)
+func _on_Player_destroy_tile(destruct_positions: Array) -> void:
+	for pos in destruct_positions:
+		var tile = global_to_tile(pos, $Sand)
+		if $Sand.get_cellv(tile) != -1 and not tile in tiles_to_destroy:
+			tiles_to_destroy.append(tile)
+	#print(tile)
+	#var behind = tile - Vector2.LEFT
+	#if $Sand.get_cellv(behind) != -1 and not behind in tiles_to_destroy:
+	#	tiles_to_destroy.append(behind)
